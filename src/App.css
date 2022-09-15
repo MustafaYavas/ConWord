@@ -6,8 +6,8 @@
     --input-bg: #f5f8ff;
     --txt-color: #2f2d2f;
     --txt-second-color: #ccc;
-    --border-color: #4267b2;
-    --box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    --border-color: #0065fc;
+    --box-shadow: rgba(13, 13, 14, 0.3) 8px 16px 36px;
 }
 
 * {
@@ -38,6 +38,7 @@ body {
 }
 
 .header {
-    margin-bottom: 30px;
+    margin-bottom: 1.25rem;
     text-align: center;
+    color: black;
 }

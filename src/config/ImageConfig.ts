@@ -1,7 +1,9 @@
-import fileDefault from '../assets/file-blank-solid-240.png';
-import filePdf from '../assets/file-pdf-solid-240.png';
+import fileDefault from '../assets/blank.png';
+import filePdf from '../assets/pdf.png';
+import fileWord from '../assets/word.png';
 
 export const ImageConfig = {
     default: fileDefault,
     pdf: filePdf,
+    word: fileWord
 }

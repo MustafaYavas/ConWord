@@ -1,17 +1,13 @@
 import './App.css';
-import DropFileInput from './components/DropFileInput/DropFileInput';
+import DropFileInput from './components/Files/FileInput';
 
 function App() {
-    const onFileChange = (files: File[]) => {
-        console.log(files);
-    }
-
     return (
         <div className='box'>
             <h2 className='header'>
-                React drop files input
+                Convert Your Files
             </h2>
-            <DropFileInput onFileChange={(files: File[]) => onFileChange(files)}/>
+            <DropFileInput />
         </div>
     );
 }
