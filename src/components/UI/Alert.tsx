@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
-type ErrorProps = {
+type AlertProps = {
     errorType: string
 }
 
-const Error = (props: ErrorProps) => {
+const Alert = (props: AlertProps) => {
     const [content, setContent] = useState<React.ReactElement>();
 
     useEffect(() => {
         let errorContent = null;
         if(props.errorType === 'FILE-EXTENSION-ERROR') {
             errorContent = <div className='drop-file-input__error'>
-                        <p>Only files with</p>
+                        <p>Only file with</p>
                         <p>
-                            <span style={{color: '#F80202'}}>.pdf</span>, 
-                            <span style={{color: '#0267F8'}}> .docx</span> and 
-                            <span style={{color: '#029FF8'}}> .doc</span>
+                            <span style={{color: '#0267F8'}}>.docx</span> 
                         </p>
-                        <p>extensions can be uploaded!</p>
+                        <p>extension can be uploaded!</p>
                     </div>
         }
         else {
@@ -35,4 +33,4 @@ const Error = (props: ErrorProps) => {
     )
 }
 
-export default Error
+export default Alert;

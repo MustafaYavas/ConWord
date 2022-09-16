@@ -2,7 +2,7 @@ type FileItemsProps = {
     imgUrl: string,
     name: string,
     size: string,
-    files: File[],
+    // files: File[],
     file: File,
     fileRemove: (file: File) => void
 }

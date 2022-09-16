@@ -1,17 +1,22 @@
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
+import axios from 'axios';
 
 import './FileInput.css';
 import { ImageConfig } from '../../config/ImageConfig';
 import FileItems from './FileItems';
-import Error from '../UI/Error';
+import Alert from '../UI/Alert';
+import FileDownload from './FilesDownload/FileDownload';
+import LoadingSpinner from '../UI/LoadingSpinner/LoadingSpinner';
 import uploadImg from '../../assets/upload.png';
 
 const DropFileInput = () => {
     const wrapperRef = useRef<HTMLInputElement>(null);
-    const [fileList, setFileList] = useState<File[]>([]);
+    const [file, setFile] = useState<File | null>(null);
     const [error, setError] = useState<boolean>(false);
     const [errorType, setErrorType] = useState<string>('');
+    const [convertedBefore, setConvertedBefore] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const onDragEnter = () => {
         wrapperRef.current!.classList.add('dragover');
@@ -34,36 +39,59 @@ const DropFileInput = () => {
 
         if(checkError(fileType, newFile)) return;
         else {
-            const updatedList = [...fileList, newFile];
-            setFileList(updatedList);
+            setFile(newFile);
         }
         
     }
 
     const fileRemove = (file: File) => {
-        const updatedList = [...fileList];
-        updatedList.splice(fileList.indexOf(file), 1);
-        setFileList(updatedList);
+        setFile(null);
+        setConvertedBefore(false);
     }
 
     const checkError = (fileType: string, newFile: File): boolean => {
         let hasError = false
-        if(fileType === 'pdf' || fileType === 'docx' || fileType === 'doc') setError(false);
+        if(fileType === 'docx') setError(false);
         else {
             setErrorType('FILE-EXTENSION-ERROR');
             setError(true);
             hasError = true;
         }
-
-        fileList.forEach(file => {
-            if(file.name === newFile.name) {
-                setErrorType('FILE-DUPLICATION-ERROR');
-                setError(true);
-                hasError = true;
-            }
-        })
         
         return hasError;
+    }
+
+    const convertFilesHandler = async() => {
+        const formData: any = new FormData();
+        formData.append('file', file);
+
+        setFile(null);
+        setConvertedBefore(true);
+        setIsLoading(true);
+
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 2000)
+
+        try {
+            await axios.post('http://localhost:5000/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }); 
+        } catch (err: any) {
+            console.log(err.response)
+        }
+        
+        
+    }
+
+    const downloadFileHandler = () => {
+        window.open('http://localhost:5000/output');
+
+        setFile(null);
+        setConvertedBefore(false);
+        setIsLoading(false);
     }
 
     return (
@@ -79,42 +107,44 @@ const DropFileInput = () => {
                     <img src={uploadImg} alt='' />
                     <p>Drag & Drop your files here</p>
                 </div>
-                <input type='file' value='' accept='.pdf, .doc, .docx' onChange={onFileDrop}/>
+                <input type='file' name='sampleFile' value='' accept='.docx' onChange={onFileDrop}/>
             </div>
+            
             {
                 error === true && 
-                    <Error errorType={errorType}/>
+                    <Alert errorType={errorType}/>
             }
             {
-                fileList.length > 0 ? (
+                file && (
                     <div className='drop-file-preview'>
-
                         <div className='drop-file-preview-header'>
                             <p className='drop-file-preview__title'>
-                                Ready to convert - 
-                                <span> {fileList.length} {fileList.length === 1 ? 'file' : 'files'}</span>
+                                Ready to convert
                             </p>
-                            <button>Convert</button>
+                            <button onClick={convertFilesHandler}>Convert</button>
                         </div>
                         
                         <div className='drop-file-preview-list'>
-                            {
-                                fileList.map((item, i) => (
-                                    <FileItems 
-                                        key={i}
-                                        imgUrl={item.name.split('.').pop() === 'pdf' ? ImageConfig.pdf : ImageConfig.word}
-                                        name={item.name}
-                                        size={(item.size/(1024*1024)).toFixed(2)}
-                                        files={fileList}
-                                        file={item}
-                                        fileRemove={fileRemove}
-                                    />
-                                ))
-                            }
+                            <FileItems 
+                                key={file!.name}
+                                imgUrl={file!.name.split('.').pop() === 'pdf' ? ImageConfig.pdf : ImageConfig.word}
+                                name={file!.name}
+                                size={(file!.size/(1024*1024)).toFixed(2)}
+                                file={file!}
+                                fileRemove={fileRemove}
+                            />
                         </div>
                         
                     </div>
-                ) : null
+                )
+            }
+            {
+                (!file && convertedBefore && isLoading) &&  <div style={{textAlign: 'center'}}>
+                    <LoadingSpinner/>
+                </div>
+            }
+            {
+                (!file && convertedBefore && !isLoading) &&  <FileDownload onClickHandler={downloadFileHandler}/> 
             }
         </>
     );
