@@ -1,5 +1,5 @@
 import './App.css';
-import DropFileInput from './components/Files/FileInput';
+import DropFileInput from './components/Files/FilesInput/FileInput';
 
 function App() {
     return (

@@ -3,12 +3,12 @@ import { useRef, useState } from 'react';
 import axios from 'axios';
 
 import './FileInput.css';
-import { ImageConfig } from '../../config/ImageConfig';
-import FileItems from './FileItems';
-import Alert from '../UI/Alert';
-import FileDownload from './FilesDownload/FileDownload';
-import LoadingSpinner from '../UI/LoadingSpinner/LoadingSpinner';
-import uploadImg from '../../assets/upload.png';
+import { ImageConfig } from '../../../config/ImageConfig';
+import FileItems from '../FileItems';
+import Alert from '../../UI/Alert';
+import FileDownload from '../FilesDownload/FileDownload';
+import LoadingSpinner from '../../UI/LoadingSpinner/LoadingSpinner';
+import uploadImg from '../../../assets/upload.png';
 
 const DropFileInput = () => {
     const wrapperRef = useRef<HTMLInputElement>(null);
@@ -69,21 +69,16 @@ const DropFileInput = () => {
         setConvertedBefore(true);
         setIsLoading(true);
 
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000)
-
         try {
             await axios.post('http://localhost:5000/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }); 
+            setIsLoading(false);
         } catch (err: any) {
             console.log(err.response)
-        }
-        
-        
+        }        
     }
 
     const downloadFileHandler = () => {
