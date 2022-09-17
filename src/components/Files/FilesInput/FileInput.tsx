@@ -70,7 +70,7 @@ const DropFileInput = () => {
         setIsLoading(true);
 
         try {
-            await axios.post('http://localhost:5000/upload', formData, {
+            await axios.post(`${process.env.REACT_APP_BACKEND_URL}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
