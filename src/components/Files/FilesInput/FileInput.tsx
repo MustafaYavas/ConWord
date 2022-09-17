@@ -6,7 +6,7 @@ import './FileInput.css';
 import { ImageConfig } from '../../../config/ImageConfig';
 import FileItems from '../FileItems';
 import Alert from '../../UI/Alert';
-import FileDownload from '../FilesDownload/FileDownload';
+import FileReset from '../FileReset/FileReset';
 import LoadingSpinner from '../../UI/LoadingSpinner/LoadingSpinner';
 import uploadImg from '../../../assets/upload.png';
 
@@ -81,9 +81,7 @@ const DropFileInput = () => {
         }        
     }
 
-    const downloadFileHandler = () => {
-        window.open('http://localhost:5000/output');
-
+    const fileResetHandler = async() => {
         setFile(null);
         setConvertedBefore(false);
         setIsLoading(false);
@@ -139,7 +137,7 @@ const DropFileInput = () => {
                 </div>
             }
             {
-                (!file && convertedBefore && !isLoading) &&  <FileDownload onClickHandler={downloadFileHandler}/> 
+                (!file && convertedBefore && !isLoading) &&  <FileReset onClickHandler={fileResetHandler}/> 
             }
         </>
     );

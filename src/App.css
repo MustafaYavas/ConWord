@@ -37,8 +37,14 @@ body {
     box-shadow: var(--box-shadow);
 }
 
-.header {
-    margin-bottom: 1.25rem;
+.header-big {
+    margin-bottom: 0.25rem;
+    text-align: center;
+    color: black;
+}
+
+.header-small {
+    margin-bottom: 1rem;
     text-align: center;
     color: black;
 }

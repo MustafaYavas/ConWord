@@ -1,9 +1,14 @@
-.button-wrapper {
+.wrapper {
     text-align: center;
     margin-top: 2rem;
 }
 
-.button-wrapper button {
+.wrapper p{
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+.wrapper button {
     padding: 1.3em 3em;
     font-size: 12px;
     text-transform: uppercase;
@@ -20,13 +25,13 @@
     font-weight: bolder;
 }
   
-.button-wrapper button:hover {
+.wrapper button:hover {
     background-color: #23c483;
     box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
     color: #fff;
     transform: translateY(-7px);
 }
   
-.button-wrapper button:active {
+.wrapper button:active {
     transform: translateY(-1px);
 }
